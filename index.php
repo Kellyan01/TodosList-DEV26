@@ -2,8 +2,12 @@
 /*
 PROJET TODOS LIST
 */
+//Démarrage de la session
+session_start();
+
 // Déclarer mes variables d'affichage
 $message = '';
+$messageCo = '';
 $userList = '';
 
 //ALGORITHME D'INSCRIPTION D'UN UTILISATEUR
@@ -92,6 +96,72 @@ if(isset($_POST['submit'])){
 
 }
 
+//ALGORITHME DE CONNEXION
+//1) Vérifier que je reçois un formulaire de connexion
+if(isset($_POST['submitCo'])){
+
+    //2) Vérifier que les champs sont remplis
+    if(!empty($_POST['emailCo']) && !empty($_POST['passwordCo'])){
+        //3) Vérifier le format des données
+        if(filter_var($_POST['emailCo'],FILTER_VALIDATE_EMAIL)){
+            //4) Nettoyer les données : trim()
+            $email = trim($_POST['emailCo']);
+
+            //Vérifier qu'un compte existe
+            try{
+                //A. Objet de connexion PDO
+                $pdo = new PDO('mysql:host=localhost;dbname=todos','root','root',[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+                //B. Préparation de la requête
+                $request = $pdo->prepare('SELECT u.id_user, u.firstname, u.lastname, u.email, u.`password`, u.created_at, r.`role` FROM users u INNER JOIN roles r ON u.id_role = r.id_role WHERE u.email = ?');
+
+                //C. BindParam
+                $request->bindParam(1,$email,PDO::PARAM_STR);
+
+                //D. Exécution de la requête
+                $request->execute();
+
+                //E. Récupération des données dans un tableau associatif
+                $data = $request->fetch(PDO::FETCH_ASSOC);
+
+                //F. Vérifier si les données sont vide ou non
+                if(!empty($data)){
+                    //G. Vérifier si les mot de passe correspondent
+                    if(password_verify($_POST['passwordCo'],$data["password"])){
+                        //H. Connecter l'utilisateur
+                        $_SESSION['role'] = $data['role'];
+                        $_SESSION['id'] = $data['id_user'];
+                        $_SESSION['nom'] = $data['lastname'];
+                        $_SESSION['prenom'] = $data['firstname'];
+                        $_SESSION['email'] = $data['email'];
+                        $_SESSION['createdAt'] = $data['created_at'];
+
+                        //I. Afficher le message de confirmation
+                        $messageCo = "{$_SESSION['prenom']} {$_SESSION['nom']} est bien connecté !";
+
+                    }else{
+                        //Message d'erreur
+                        $messageCo = "Email et/ou Mot de Passe incorrect.";
+                    }
+
+                }else{
+                    //Message d'erreur
+                    $messageCo = "Email et/ou Mot de Passe incorrect.";
+                }
+
+            }catch(EXCEPTION $error){
+                die($error->getMessage());
+            }
+        }else{
+            //Message d'erreur
+            $messageCo = 'Vous devez entrer un email valide';
+        }
+    }else{
+        // Message d'erreur
+        $messageCo = 'Veuillez remplir tous les champs';
+    }
+}
+
 //ALGORITHME D'AFFICHAGE DES UTILISATEURS
 try{
     //A. Instancier (construire) un objet PDO
@@ -107,8 +177,6 @@ try{
     //D. Récupérer le tableau de données renvoyé par la BDD
     $data = $request->fetchAll(PDO::FETCH_ASSOC);
 
-    print_r($data);
-
     //E. Formattage de mes donnée utilisateurs et les mettre dans ma variable d'affichage $userList
     foreach($data as $user){
         $userList = $userList."<li>{$user['firstname']} {$user['lastname']} - {$user['email']}</li>";
@@ -117,31 +185,47 @@ try{
 }catch(EXCEPTION $error){
     die($error->getMessage());
 }
+
+//J'inclus le header en utilisant son chemin relatif
+include('header.php');
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+
     <main>
         <h1>Page d'Accueil</h1>
-        <section>
-            <h2>Inscription</h2>
-            <form action="" method="post">
-                <label for="prenom">Prenom <input type="text" name="prenom" id="prenom"></label>
-                <label for="nom">Nom <input type="text" name="nom" id="nom"></label>
-                <label for="email">Email <input type="text" name="email" id="email"></label>
-                <label for="password">Mot de Passe <input type="text" name="password" id="password"></label>
-                <input type="submit" name="submit">
-            </form>
-            <p>
-                <?php echo($message) ?>
-            </p>
-        </section>
+        <?php 
+            //Vérifier si personne n'est connecté
+            // Si c'est le cas, j'affiche les formulaires d'inscription et connexion
+            if(!isset($_SESSION['id'])){
+        ?>
+                <section>
+                    <h2>Inscription</h2>
+                    <form action="" method="post">
+                        <label for="prenom">Prenom <input type="text" name="prenom" id="prenom"></label>
+                        <label for="nom">Nom <input type="text" name="nom" id="nom"></label>
+                        <label for="email">Email <input type="text" name="email" id="email"></label>
+                        <label for="password">Mot de Passe <input type="text" name="password" id="password"></label>
+                        <input type="submit" name="submit">
+                    </form>
+                    <p>
+                        <?php echo($message) ?>
+                    </p>
+                </section>
+                <section>
+                    <h2>Connexion</h2>
+                    <form action="" method="post">
+                        <label for="emailCo">Email <input type="text" name="emailCo" id="emailCo"></label>
+                        <label for="passwordCo">Mot de Passe <input type="text" name="passwordCo" id="passwordCo"></label>
+                        <input type="submit" name="submitCo">
+                    </form>
+                </section>
+        <?php
+            }
+        ?>
+        <!-- Affichage du message de confirmation de connexion -->
+        <p>
+            <?php echo($messageCo) ?>
+        </p>
         <section>
             <h2>Listes des utilisateurs</h2>
             <ul>
@@ -149,5 +233,8 @@ try{
             </ul>
         </section>
     </main>
-</body>
-</html>
+
+<?php
+    //J'inclus le footer en utilisant son chemin relatif
+    include('footer.php');
+?>
