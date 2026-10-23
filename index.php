@@ -35,20 +35,41 @@ if(isset($_POST['submit'])){
                     //A. Instancier (construire) un objet PDO
                     $pdo = new PDO('mysql:host=localhost;dbname=todos','root','root',[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-                    //B. Préparer ma requête d'insertion en BDD
-                    $request = $pdo->prepare('INSERT INTO users (firstname, lastname, email, `password`) VALUES(?, ?, ?, ?)');
+                    //A.BIS : Vérifier si l'email utiliser pour l'enregistrement est disponible
+                    //Préparer une requête SELECT pour récupérer les données d'un compte utilisant l'email
+                    $request = $pdo->prepare('SELECT u.firstname, u.lastname, u.email FROM users u WHERE u.email = ?');
 
-                    //C. BindParam pour remplir les ? au sein de la requête
-                    $request->bindParam(1,$prenom,PDO::PARAM_STR);
-                    $request->bindParam(2,$nom,PDO::PARAM_STR);
-                    $request->bindParam(3,$email,PDO::PARAM_STR);
-                    $request->bindParam(4,$password,PDO::PARAM_STR);
+                    //BindParam() pour injecter l'email dans la requête
+                    $request->bindParam(1,$email,PDO::PARAM_STR);
 
-                    //D. Envoyer la requête à la BDD, pour exécution
+                    //Exécuter la requête
                     $request->execute();
 
-                    //E. Message de confirmation
-                    $message = "L'utilisateur a été enregistré :  {$prenom} {$nom} - {$email}";
+                    //Récupérer la réponse
+                    //ici fetch() uniquement, car je n'ai besoin de trouver qu'une seule ligne, et donc qu'un seul et unique tableau associatif au maximum
+                    $data = $request->fetch(PDO::FETCH_ASSOC);
+
+                    //Vérifier si le tableau reçu est vide ou pas
+                    if(empty($data)){
+                        //B. Préparer ma requête d'insertion en BDD
+                        $request = $pdo->prepare('INSERT INTO users (firstname, lastname, email, `password`) VALUES(?, ?, ?, ?)');
+
+                        //C. BindParam pour remplir les ? au sein de la requête
+                        $request->bindParam(1,$prenom,PDO::PARAM_STR);
+                        $request->bindParam(2,$nom,PDO::PARAM_STR);
+                        $request->bindParam(3,$email,PDO::PARAM_STR);
+                        $request->bindParam(4,$password,PDO::PARAM_STR);
+
+                        //D. Envoyer la requête à la BDD, pour exécution
+                        $request->execute();
+
+                        //E. Message de confirmation
+                        $message = "L'utilisateur a été enregistré :  {$prenom} {$nom} - {$email}";
+
+                    }else{
+                        // Message d'erreur
+                        $message = "Cette email est déjà utilisé par un autre compte.";
+                    }
 
                 }catch(EXCEPTION $error){
                     die($error->getMessage());
@@ -75,6 +96,7 @@ if(isset($_POST['submit'])){
 try{
     //A. Instancier (construire) un objet PDO
     $pdo = new PDO('mysql:host=localhost;dbname=todos','root','root',[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
 
     //B. Préparer la requête SELECT
     $request = $pdo->prepare('SELECT u.firstname, u.lastname, u.email FROM users u');
