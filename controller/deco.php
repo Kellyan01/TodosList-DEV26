@@ -6,5 +6,5 @@ session_start();
 session_destroy();
 
 //Redirection HTTP
-header('Location:index.php');
+header('Location:ControllerAccueil.php');
 exit;
