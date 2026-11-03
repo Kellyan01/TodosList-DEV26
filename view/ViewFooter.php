@@ -1,8 +1,8 @@
 <?php
 //Class ViewFooter
-class ViewFooter{
+class ViewFooter extends View{
     //METHODS
-    public function displayFooter(){
+    public function display():void{
     ?>
         </body>
         </html>

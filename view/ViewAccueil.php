@@ -1,5 +1,5 @@
 <?php
-class ViewAccueil{
+class ViewAccueil extends View{
     //ATTRIBUT
     private string $message = "";
     private string $messageCo = "";
@@ -70,7 +70,7 @@ class ViewAccueil{
     }
 
     //METHODS
-    function displayAccueil(){
+    function display():void{
     ?>
         <main>
                 <h1>Page d'Accueil</h1>

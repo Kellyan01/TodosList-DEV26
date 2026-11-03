@@ -1,8 +1,20 @@
 <?php
-class ViewHeader{
+class ViewHeader extends View{
+    //ATTRIBUT
+    private string $title;
+
+    //SETTER ET GETTER
+    public function getTitle():string{
+        return $this->title;
+    }
+    public function setTitle(string $newTitle):self{
+        $this->title = $newTitle;
+        return $this;
+    }
+
     //METHODS
     // Pas la peine de démarrer le Session. Chaque page incluant le header.php le fait déjà.
-    public function displayHeader(){
+    public function display():void{
 
     ?>
 
@@ -11,7 +23,7 @@ class ViewHeader{
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
+            <title><?php echo($this->getTitle()) ?></title>
         </head>
         <body>
             <header>

@@ -6,110 +6,24 @@ PROJET TODOS LIST
 session_start();
 
 //Importer les ressources
+include './Controller.php';
+include '../model/Model.php';
+include('../view/View.php');
 include '../model/ModelUser.php';
 include('../view/ViewHeader.php');
 include('../view/ViewAccueil.php');
 include('../view/ViewFooter.php');
 
 //Class ControllerAccueil
-class ControllerAccueil{
+class ControllerAccueil extends Controller{
     //ATTRIBUT
-    private ModelUser $modelUser;
-    private ViewHeader $viewHeader;
-    private ViewFooter $viewFooter;
-    private ViewAccueil $viewAccueil;
-    
+        
     //CONSTRUCTEUR
     public function __construct(ModelUser $newModelUser, ViewHeader $newViewHeader, ViewFooter $newViewFooter, ViewAccueil $newViewAccueil){
-        $this->modelUser = $newModelUser;
-        $this->viewHeader = $newViewHeader;
-        $this->viewFooter = $newViewFooter;
-        $this->viewAccueil = $newViewAccueil;
-    }
-
-    //GETTER ET SETTER
-    /**
-     * Get the value of modelUser
-     *
-     * @return ModelUser
-     */
-    public function getModelUser(): ModelUser {
-        return $this->modelUser;
-    }
-
-    /**
-     * Set the value of modelUser
-     *
-     * @param ModelUser $modelUser
-     *
-     * @return self
-     */
-    public function setModelUser(ModelUser $modelUser): self {
-        $this->modelUser = $modelUser;
-        return $this;
-    }
-
-    /**
-     * Get the value of viewHeader
-     *
-     * @return ViewHeader
-     */
-    public function getViewHeader(): ViewHeader {
-        return $this->viewHeader;
-    }
-
-    /**
-     * Set the value of viewHeader
-     *
-     * @param ViewHeader $viewHeader
-     *
-     * @return self
-     */
-    public function setViewHeader(ViewHeader $viewHeader): self {
-        $this->viewHeader = $viewHeader;
-        return $this;
-    }
-
-    /**
-     * Get the value of viewFooter
-     *
-     * @return ViewFooter
-     */
-    public function getViewFooter(): ViewFooter {
-        return $this->viewFooter;
-    }
-
-    /**
-     * Set the value of viewFooter
-     *
-     * @param ViewFooter $viewFooter
-     *
-     * @return self
-     */
-    public function setViewFooter(ViewFooter $viewFooter): self {
-        $this->viewFooter = $viewFooter;
-        return $this;
-    }
-
-    /**
-     * Get the value of viewAccueil
-     *
-     * @return ViewAccueil
-     */
-    public function getViewAccueil(): ViewAccueil {
-        return $this->viewAccueil;
-    }
-
-    /**
-     * Set the value of viewAccueil
-     *
-     * @param ViewAccueil $viewAccueil
-     *
-     * @return self
-     */
-    public function setViewAccueil(ViewAccueil $viewAccueil): self {
-        $this->viewAccueil = $viewAccueil;
-        return $this;
+        $this->addModel('modelUser', $newModelUser);
+        $this->addView('header', $newViewHeader);
+        $this->addView('footer', $newViewFooter);
+        $this->addView('accueil',$newViewAccueil);
     }
 
     //METHODS
@@ -139,34 +53,34 @@ class ControllerAccueil{
 
                         //EXPLOITATION DES DONNEES
                         // -> Les étapes pour enregistrer l'utilisateur
-                        $data = $this->getModelUser()->setEmail($email)->findOneByEmail();
+                        $data = $this->getModels()['modelUser']->setEmail($email)->findOneByEmail();
 
                         //Vérifier si le tableau reçu est vide ou pas
                         if(empty($data)){
                                 //Lancement de l'insertion en fournissant les données à insérer
-                                $this->getModelUser()->setFirstname($prenom)->setLastname($nom)->setPassword($password)->addUser();
+                                $this->getModels()['modelUser']->setFirstname($prenom)->setLastname($nom)->setPassword($password)->addUser();
 
                                 //E. Message de confirmation que je passe à la View
-                                $this->getViewAccueil()->setMessage("L'utilisateur a été enregistré :  {$prenom} {$nom} - {$email}");
+                                $this->getViews()['accueil']->setMessage("L'utilisateur a été enregistré :  {$prenom} {$nom} - {$email}");
 
                             }else{
                                 // Message d'erreur
-                                $this->getViewAccueil()->setMessage("Cette email est déjà utilisé par un autre compte.");
+                                $this->getViews()['accueil']->setMessage("Cette email est déjà utilisé par un autre compte.");
                             }
 
                     }else{
                         // Message d'erreur si le mot de passe est inférieur à 12 caractères
-                        $this->getViewAccueil()->setMessage("Votre mot de passe doit faire au moins 12 caractères.");
+                        $this->getViews()['accueil']->setMessage("Votre mot de passe doit faire au moins 12 caractères.");
                     }
 
                 }else{
                     // Message d'erreur si l'email n'est pas au bon format
-                    $this->getViewAccueil()->setMessage("Votre email n'est pas au bon format.");
+                    $this->getViews()['accueil']->setMessage("Votre email n'est pas au bon format.");
                 }
 
             }else{
                 // Message d'erreur si l'un des champs n'est pas remplis
-                $this->getViewAccueil()->setMessage("Veuillez remplir tous les champs du formulaire.");
+                $this->getViews()['accueil']->setMessage("Veuillez remplir tous les champs du formulaire.");
             }
 
         }
@@ -185,7 +99,7 @@ class ControllerAccueil{
                     $email = trim($_POST['emailCo']);
 
                     //Vérifier qu'un compte existe
-                    $data = $this->getModelUser()->setEmail($email)->findOneByEmail();
+                    $data = $this->getModels()['modelUser']->setEmail($email)->findOneByEmail();
 
                     //F. Vérifier si les données sont vide ou non
                     if(!empty($data)){
@@ -200,24 +114,24 @@ class ControllerAccueil{
                             $_SESSION['createdAt'] = $data['created_at'];
 
                             //I. Afficher le message de confirmation
-                            $this->getViewAccueil()->setMessageCo("{$_SESSION['prenom']} {$_SESSION['nom']} est bien connecté !");
+                            $this->getViews()['accueil']->setMessageCo("{$_SESSION['prenom']} {$_SESSION['nom']} est bien connecté !");
 
                         }else{
                             //Message d'erreur
-                            $this->getViewAccueil()->setMessageCo("Email et/ou Mot de Passe incorrect.");
+                            $this->getViews()['accueil']->setMessageCo("Email et/ou Mot de Passe incorrect.");
                         }
 
                     }else{
                         //Message d'erreur
-                        $this->getViewAccueil()->setMessageCo("Email et/ou Mot de Passe incorrect.");
+                        $this->getViews()['accueil']->setMessageCo("Email et/ou Mot de Passe incorrect.");
                     }
                 }else{
                     //Message d'erreur
-                    $this->getViewAccueil()->setMessageCo('Vous devez entrer un email valide');
+                    $this->getViews()['accueil']->setMessageCo('Vous devez entrer un email valide');
                 }
             }else{
                 // Message d'erreur
-                $this->getViewAccueil()->setMessageCo('Veuillez remplir tous les champs');
+                $this->getViews()['accueil']->setMessageCo('Veuillez remplir tous les champs');
             }
         }
     }
@@ -225,10 +139,10 @@ class ControllerAccueil{
     //ALGORITHME D'AFFICHAGE DES UTILISATEURS
     function displayUsers(){
         //D. Récupérer le tableau de données renvoyé par la BDD, et l'envoyer à la View avec setData
-        $this->getViewAccueil()->setData($this->getModelUser()->findAll());
+        $this->getViews()['accueil']->setData($this->getModels()['modelUser']->findAll());
     }
 
-    function render(){
+    function render():void{
         //Lancer le traitement du formulaire d'inscriptio
         $this->registerUser();
 
@@ -239,13 +153,13 @@ class ControllerAccueil{
         $this->displayUsers();
 
         //Affichage du Header
-        $this->getViewHeader()->displayHeader();
+        $this->getViews()['header']->setTitle("Accueil")->display();
 
         //Affichage du contenu
-        $this->getViewAccueil()->displayAccueil();
+        $this->getViews()['accueil']->display();
 
         //Affichage du footer
-        $this->getViewFooter()->displayFooter();
+        $this->getViews()['footer']->display();
     }
 }
 
