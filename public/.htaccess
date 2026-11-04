@@ -1,0 +1,20 @@
+# Autoriser la réécriture d'url
+RewriteEngine On
+
+# base du projet (emplacement à partir de la racine du serveur)
+RewriteBase /TodosList/public/
+
+# Si quelqu’un accède à un dossier sans index.php, Apache interdit l'affichage de la liste de ses fichiers
+Options -Indexes
+
+# lors d'une requête HTTP (une requête Client), Apache va vérifier la ressource demandée
+# si ce n'est pas un répertoire
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Si ce n'est pas un fichier
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Si la ressource n'est ni un fichier, ni un dossier, alors Apache dirige vers index.php qui servira de routeur
+# ^(.+)$ : regex pour indiquer que l'url fait au moins 1 caractère minimum
+# QSA : accepté les variable de type $_GET
+RewriteRule ^(.+)$ index.php [QSA,L]

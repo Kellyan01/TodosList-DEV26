@@ -1,0 +1,8 @@
+# 1er fichier pour empêcher l'accès à certaines ressources sensibles comme env.php
+# Premier .htaccess qui redirige toutes les requêtes dans public
+RewriteEngine On
+RewriteBase /TodosList/
+
+# Tout ce qui n'est pas déjà dans public/ y est envoyé
+RewriteCond %{REQUEST_URI} !/public/
+RewriteRule ^(.*)$ public/$1 [L]

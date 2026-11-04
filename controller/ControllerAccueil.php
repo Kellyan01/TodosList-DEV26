@@ -1,19 +1,4 @@
 <?php
-/*
-PROJET TODOS LIST
-*/
-//Démarrage de la session
-session_start();
-
-//Importer les ressources
-include './Controller.php';
-include '../model/Model.php';
-include('../view/View.php');
-include '../model/ModelUser.php';
-include('../view/ViewHeader.php');
-include('../view/ViewAccueil.php');
-include('../view/ViewFooter.php');
-
 //Class ControllerAccueil
 class ControllerAccueil extends Controller{
     //ATTRIBUT
@@ -162,18 +147,4 @@ class ControllerAccueil extends Controller{
         $this->getViews()['footer']->display();
     }
 }
-
-//Création du Model à exploiter
-$modelUser = new ModelUser(new PDO("mysql:host=localhost;dbname=todos","root","root"));
-
-//Création des View
-$viewHeader = new ViewHeader();
-$viewFooter = new ViewFooter();
-$viewAccueil = new ViewAccueil();
-
-//Créeation du controller
-$controllerAccueil = new ControllerAccueil($modelUser,$viewHeader,$viewFooter,$viewAccueil);
-
-//Lancer le rendu de la page
-$controllerAccueil->render();
 ?>

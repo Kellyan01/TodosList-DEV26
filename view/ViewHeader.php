@@ -19,7 +19,7 @@ class ViewHeader extends View{
     ?>
 
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="fr">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,17 +28,16 @@ class ViewHeader extends View{
         <body>
             <header>
                 <nav>
-                    <?php 
-                        //Variable d'affiche pour le menu de navigation
-                        $nav = "";
-
+                    <a href="/TodosList/">Accueil</a>
+                    <?php
                         //Vérifier si quelqu'un est connecté
                         if(isset($_SESSION['id'])){
                             //Mise à jour du menu de navigation : ajout du bouton de déconnexion
-                            $nav = "<a href='./deco.php'>Se Déconnecter</a>";
+                    ?>
+                            <a href='/TodosList/moncompte'>Mon Compte</a>
+                            <a href='/TodosList/deconnexion'>Se Déconnecter</a>
+                    <?php
                         }
-                    
-                        echo($nav) 
                     ?>
                 </nav>
             </header>

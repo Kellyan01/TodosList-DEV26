@@ -1,10 +1,12 @@
 <?php
-//Démarrer la session
-session_start();
+function deconnect(){
+    //Démarrer la session
+    session_start();
 
-//Supprimer la session
-session_destroy();
+    //Supprimer la session
+    session_destroy();
 
-//Redirection HTTP
-header('Location:ControllerAccueil.php');
-exit;
+    //Redirection HTTP
+    header('Location:/TodosList/');
+    exit;
+}
