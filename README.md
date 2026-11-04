@@ -148,8 +148,11 @@ TodosList/
 ├── public/
 │   ├── .htaccess          # Redirige vers index.php
 │   └── index.php          # Point d'entrée unique : le routeur
+├── utils/
+│   └── utils.php          # Fonctions utilitaires (connexion PDO)
 └── sql/
     └── TodoListBDD.sql    # Script de création de la base
+
 ```
 
 ## Base de données

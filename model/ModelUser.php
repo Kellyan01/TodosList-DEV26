@@ -173,8 +173,12 @@ class ModelUser extends Model{
             //ici fetchAll() pour retourner un tableau contenant des tableaux associatifs (FETCH_ASSOC) des users
             return $request->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $error){
-            //Message pour l'utilisateur : le bon code HTTP et un message neutre
             http_response_code(500);
+            //En mode Debug (environnement de développement), laisse le message de debug pour le développeur
+            if ($_ENV['debug']) {
+                die("<h1>Erreur BDD : " . htmlentities($error->getMessage()) . "</h1>");
+            }
+            //Message pour l'utilisateur : le bon code HTTP et un message neutre
             die("<h1>Service momentanément indisponible. Veuillez réessayer plus tard.</h1>");
         }
     }
@@ -195,8 +199,12 @@ class ModelUser extends Model{
             //ici fetch() uniquement, car je n'ai besoin de trouver qu'une seule ligne, et donc qu'un seul et unique tableau associatif au maximum
             return $request->fetch(PDO::FETCH_ASSOC);
         }catch(Exception $error){
-            //Message pour l'utilisateur : le bon code HTTP et un message neutre
             http_response_code(500);
+            //En mode Debug (environnement de développement), laisse le message de debug pour le développeur
+            if ($_ENV['debug']) {
+                die("<h1>Erreur BDD : " . htmlentities($error->getMessage()) . "</h1>");
+            }
+            //Message pour l'utilisateur : le bon code HTTP et un message neutre
             die("<h1>Service momentanément indisponible. Veuillez réessayer plus tard.</h1>");
         }
     }
@@ -217,8 +225,12 @@ class ModelUser extends Model{
 
 
         }catch(Exception $error){
-            //Message pour l'utilisateur : le bon code HTTP et un message neutre
             http_response_code(500);
+            //En mode Debug (environnement de développement), laisse le message de debug pour le développeur
+            if ($_ENV['debug']) {
+                die("<h1>Erreur BDD : " . htmlentities($error->getMessage()) . "</h1>");
+            }
+            //Message pour l'utilisateur : le bon code HTTP et un message neutre
             die("<h1>Service momentanément indisponible. Veuillez réessayer plus tard.</h1>");
         }
     }

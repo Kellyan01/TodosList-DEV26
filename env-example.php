@@ -1,5 +1,8 @@
 <?php
 //Fichier d'exemple pour env.php
+// Mode Debug
+$_ENV['debug'] = true; // false en production, true en développement
+
 //Identifiant de connexion à la BDD
 $_ENV['dbhost'] = 'exemple';
 $_ENV['dbname'] = "exemple";
