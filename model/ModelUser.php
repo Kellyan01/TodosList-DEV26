@@ -176,10 +176,10 @@ class ModelUser extends Model{
             http_response_code(500);
             //En mode Debug (environnement de développement), laisse le message de debug pour le développeur
             if ($_ENV['debug']) {
-                die("<h1>Erreur BDD : " . htmlentities($error->getMessage()) . "</h1>");
+                die(json_encode(["code" => 500, "message" => $error->getMessage()]));
             }
             //Message pour l'utilisateur : le bon code HTTP et un message neutre
-            die("<h1>Service momentanément indisponible. Veuillez réessayer plus tard.</h1>");
+            die(json_encode(["code" => 500, "message" => "Service momentanément indisponible. Veuillez réessayer plus tard."]));
         }
     }
 

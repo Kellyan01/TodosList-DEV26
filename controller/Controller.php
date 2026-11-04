@@ -3,7 +3,6 @@
 class Controller{
     //ATTRIBUT
     private array $models = [];
-    private array $views = [];
 
     //CONSTRUCTEUR : laisser vide, car c'est controller concret qui sait comment il doit se construire
 
@@ -29,27 +28,6 @@ class Controller{
         return $this;
     }
 
-    /**
-     * Get the value of views
-     *
-     * @return array
-     */
-    public function getViews(): array {
-        return $this->views;
-    }
-
-    /**
-     * Set the value of views
-     *
-     * @param array $views
-     *
-     * @return self
-     */
-    public function setViews(array $views): self {
-        $this->views = $views;
-        return $this;
-    }
-
     //METHODS pour ajouter et retire un élément des attribut tableau
     public function addModel(string $key, Model $newModel):self{
         $this->models[$key] = $newModel;
@@ -61,27 +39,13 @@ class Controller{
 
     }
 
-    public function addView(string $key, View $newView):self{
-        $this->views[$key] = $newView;
-        return $this;
-    }
-    public function removeView(string $key):self{
-        unset($this->views[$key]);
-        return $this;
-
-    }
-
     //METHODS
     //une méthode render générique qui vérifie si j'ai une view pour le header, le contenu principal et le footer, puis lance leur affichage si c'est le cas
-    public function render():void{
-        if(array_key_exists("header",$this->getViews())){
-            $this->getViews()["header"]->display();
-        }
-        if(array_key_exists("main",$this->getViews())){
-            $this->getViews()["main"]->display();
-        }
-        if(array_key_exists("footer",$this->getViews())){
-            $this->getViews()["footer"]->display();
+    public function testMethods(array $tabMethods):void{
+        if(!in_array($_SERVER['REQUEST_METHOD'], $tabMethods)){
+            http_response_code(405);
+            echo(json_encode(['code' => 405,'message' => 'Méthode HTTP nons autorisée']));
+            exit;
         }
     }
 }
