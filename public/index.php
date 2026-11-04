@@ -6,7 +6,7 @@ PROJET TODOS LIST
 session_start();
 
 //Importer les ressources
-include '../env.php';
+require_once '../env.php';
 include '../controller/deco.php';
 include '../controller/Controller.php';
 include '../model/Model.php';
@@ -27,7 +27,7 @@ $path = parse_url($url)["path"];
 
 // 3. Vérifier le path et Lancer le controller selon l'url demandé
 switch($path){
-    case "/TodosList/" :
+    case BASE_URL :
         //Création du Model à exploiter
         $modelUser = new ModelUser(new PDO("mysql:host={$_ENV['dbhost']};dbname={$_ENV['dbname']}",$_ENV['dblogin'],$_ENV['dbpassword']));
 
@@ -42,7 +42,7 @@ switch($path){
         //Lancer le rendu de la page
         $controller->render();
         break;
-    case "/TodosList/moncompte" :
+    case BASE_URL."moncompte" :
         //Création des View
         $viewHeader = new ViewHeader();
         $viewFooter = new ViewFooter();
@@ -51,8 +51,9 @@ switch($path){
         $controller = new ControllerCompte($viewHeader,$viewFooter,$viewCompte);
         $controller->render();
         break;
-    case "/TodosList/deconnexion" :
+    case BASE_URL."deconnexion" :
         deconnect();
+        break;
     default :
         http_response_code(404);
         echo ("<h1>Error 404 Not Found !</h1>");

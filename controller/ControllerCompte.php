@@ -11,7 +11,12 @@ class ControllerCompte extends Controller{
     }
 
     //METHODS
-    function render():void{
+    public function render():void{
+        //Vérifier si on accède à cette page sans être connecté. Si c'est le cas, on redirige vers l'accueil
+        if (!isset($_SESSION['id'])) {
+            header('Location: /TodosList/');
+            exit;
+        }
         //Affichage du Header
         $this->getViews()['header']->setTitle("Mon Compte")->display();
 
@@ -22,4 +27,3 @@ class ControllerCompte extends Controller{
         $this->getViews()['footer']->display();
     }
 }
-?>

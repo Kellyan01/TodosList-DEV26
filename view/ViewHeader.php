@@ -1,7 +1,7 @@
 <?php
 class ViewHeader extends View{
     //ATTRIBUT
-    private string $title;
+    private string $title = "";
 
     //SETTER ET GETTER
     public function getTitle():string{
@@ -28,14 +28,14 @@ class ViewHeader extends View{
         <body>
             <header>
                 <nav>
-                    <a href="/TodosList/">Accueil</a>
+                    <a href="<?php echo(BASE_URL) ?>">Accueil</a>
                     <?php
                         //Vérifier si quelqu'un est connecté
                         if(isset($_SESSION['id'])){
                             //Mise à jour du menu de navigation : ajout du bouton de déconnexion
                     ?>
-                            <a href='/TodosList/moncompte'>Mon Compte</a>
-                            <a href='/TodosList/deconnexion'>Se Déconnecter</a>
+                            <a href='<?php echo(BASE_URL) ?>moncompte'>Mon Compte</a>
+                            <a href='<?php echo(BASE_URL) ?>deconnexion'>Se Déconnecter</a>
                     <?php
                         }
                     ?>

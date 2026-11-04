@@ -71,6 +71,7 @@ class ViewAccueil extends View{
 
     //METHODS
     function display():void{
+        // Ne pas Oublier htmlenetities() pour éviter les injection de code (faille XSS)
     ?>
         <main>
                 <h1>Page d'Accueil</h1>
@@ -84,19 +85,19 @@ class ViewAccueil extends View{
                             <form action="" method="post">
                                 <label for="prenom">Prenom <input type="text" name="prenom" id="prenom"></label>
                                 <label for="nom">Nom <input type="text" name="nom" id="nom"></label>
-                                <label for="email">Email <input type="text" name="email" id="email"></label>
-                                <label for="password">Mot de Passe <input type="text" name="password" id="password"></label>
+                                <label for="email">Email <input type="email" name="email" id="email"></label>
+                                <label for="password">Mot de Passe <input type="password" name="password" id="password"></label>
                                 <input type="submit" name="submit">
                             </form>
                             <p>
-                                <?php echo($this->getMessage()) ?>
+                                <?php echo(htmlentities($this->getMessage())) ?>
                             </p>
                         </section>
                         <section>
                             <h2>Connexion</h2>
                             <form action="" method="post">
-                                <label for="emailCo">Email <input type="text" name="emailCo" id="emailCo"></label>
-                                <label for="passwordCo">Mot de Passe <input type="text" name="passwordCo" id="passwordCo"></label>
+                                <label for="emailCo">Email <input type="email" name="emailCo" id="emailCo"></label>
+                                <label for="passwordCo">Mot de Passe <input type="password" name="passwordCo" id="passwordCo"></label>
                                 <input type="submit" name="submitCo">
                             </form>
                         </section>
@@ -105,7 +106,7 @@ class ViewAccueil extends View{
                 ?>
                 <!-- Affichage du message de confirmation de connexion -->
                 <p>
-                    <?php echo($this->getMessageCo()) ?>
+                    <?php echo(htmlentities($this->getMessageCo())) ?>
                 </p>
                 <section>
                     <h2>Listes des utilisateurs</h2>

@@ -161,7 +161,7 @@ class ModelUser extends Model{
     }
 
     //METHODS
-    public function findAll():array | null{
+    public function findAll():array{
         try{
             //A.BIS : Vérifier si l'email utiliser pour l'enregistrement est disponible
             //Préparer une requête SELECT pour récupérer les données d'un compte utilisant l'email
@@ -171,14 +171,14 @@ class ModelUser extends Model{
             $request->execute();
 
             //Récupérer la réponse
-            //ici fetch() uniquement, car je n'ai besoin de trouver qu'une seule ligne, et donc qu'un seul et unique tableau associatif au maximum
+            //ici fetchAll() pour retourner un tableau contenant des tableaux associatifs (FETCH_ASSOC) des users
             return $request->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $error){
             die($error->getMessage());
         }
     }
 
-    public function findOneByEmail():array | bool | null{
+    public function findOneByEmail():array | false{
         try{
             //A.BIS : Vérifier si l'email utiliser pour l'enregistrement est disponible
             //Préparer une requête SELECT pour récupérer les données d'un compte utilisant l'email
@@ -220,4 +220,3 @@ class ModelUser extends Model{
 
 }
 
-?>

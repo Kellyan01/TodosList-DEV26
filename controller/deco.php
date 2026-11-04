@@ -1,8 +1,5 @@
 <?php
 function deconnect(){
-    //Démarrer la session
-    session_start();
-
     //Supprimer la session
     session_destroy();
 

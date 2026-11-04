@@ -56,7 +56,7 @@ class Controller{
         return $this;
     }
     public function removeModel(string $key):self{
-        unset($this->model[$key]);
+        unset($this->models[$key]);
         return $this;
 
     }
@@ -66,7 +66,7 @@ class Controller{
         return $this;
     }
     public function removeView(string $key):self{
-        unset($this->view[$key]);
+        unset($this->views[$key]);
         return $this;
 
     }

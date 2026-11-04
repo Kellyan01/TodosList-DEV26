@@ -16,22 +16,22 @@ class ControllerAccueil extends Controller{
     public function registerUser():void{
         //1) Vérifier que je reçoive un formulaire d'inscription
         if(isset($_POST['submit'])){
+            // 2) Normalisation des données avec trim() (sauf le mot de passe) : on enlève les espaces en début et fin de chaîne de caractère avant de tester les champs vides. Ainsi on évite d'enregistrer un nom ou un prenom vide en BDD
+            $prenom = trim($_POST['prenom']);
+            $nom = trim($_POST['nom']);
+            $email = trim($_POST['email']);
 
-            //2) Vérifier que tous les champs sont remplis
-            if(!empty($_POST['prenom']) && !empty($_POST['nom']) && !empty($_POST['email']) && !empty($_POST['password'])){
+            //3) Vérifier que tous les champs sont remplis
+            if(!empty($prenom) && !empty($nom) && !empty($email) && !empty($_POST['password'])){
                 
-                //3) Vérifier le format de mes données
-                // 3.a) Vérification de l'email
-                if(filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
+                
+                //4) Vérifier le format de mes données
+                // 4.a) Vérification de l'email
+                if(filter_var($email,FILTER_VALIDATE_EMAIL)){
 
-                    // 3.b) Vérification du mot de passe
+                    // 4.b) Vérification du mot de passe
                     //mb_strlen() est plus fiable que strlen(), car il compte vraiment le nombre de caractère, et non la taille en octet
                     if(mb_strlen($_POST['password'],'UTF-8')>= 12){
-                        
-                        // 4) Nettoyage des données avec trim() (sauf le mot de passe)
-                        $prenom = trim($_POST['prenom']);
-                        $nom = trim($_POST['nom']);
-                        $email = trim($_POST['email']);
 
                         // 5) Hasher le mot de passe
                         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -72,18 +72,17 @@ class ControllerAccueil extends Controller{
     }
 
     //ALGORITHME DE CONNEXION
-    function connectUser(){
+    public function connectUser():void{
         //1) Vérifier que je reçois un formulaire de connexion
         if(isset($_POST['submitCo'])){
+            //2) Normalisation des données : trim()
+            $email = trim($_POST['emailCo']);
 
-            //2) Vérifier que les champs sont remplis
-            if(!empty($_POST['emailCo']) && !empty($_POST['passwordCo'])){
+            //3) Vérifier que les champs sont remplis
+            if(!empty($email) && !empty($_POST['passwordCo'])){
                 //3) Vérifier le format des données
-                if(filter_var($_POST['emailCo'],FILTER_VALIDATE_EMAIL)){
-                    //4) Nettoyer les données : trim()
-                    $email = trim($_POST['emailCo']);
-
-                    //Vérifier qu'un compte existe
+                if(filter_var($email,FILTER_VALIDATE_EMAIL)){
+                    //4) Vérifier qu'un compte existe
                     $data = $this->getModels()['modelUser']->setEmail($email)->findOneByEmail();
 
                     //F. Vérifier si les données sont vide ou non
@@ -122,12 +121,12 @@ class ControllerAccueil extends Controller{
     }
 
     //ALGORITHME D'AFFICHAGE DES UTILISATEURS
-    function displayUsers(){
+    public function displayUsers():void{
         //D. Récupérer le tableau de données renvoyé par la BDD, et l'envoyer à la View avec setData
         $this->getViews()['accueil']->setData($this->getModels()['modelUser']->findAll());
     }
 
-    function render():void{
+    public function render():void{
         //Lancer le traitement du formulaire d'inscriptio
         $this->registerUser();
 
@@ -147,4 +146,3 @@ class ControllerAccueil extends Controller{
         $this->getViews()['footer']->display();
     }
 }
-?>
