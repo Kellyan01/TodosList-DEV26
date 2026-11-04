@@ -169,7 +169,7 @@ TodosList/
 | Erreur 404 sur toutes les pages | Le nom du dossier ne correspond pas à `BASE_URL` et aux `RewriteBase` |
 | Erreur 500 Internal Server Error | `mod_rewrite` n'est pas activé |
 | L'accueil marche, mais `/moncompte` renvoie une 404 Apache | `AllowOverride` n'est pas à `All` : les `.htaccess` sont ignorés |
-| `Undefined constant "BASE_URL"` ou `Undefined array key "dbhost"` | Le fichier `env.php` n'existe pas ou est incomplet |
+| `Failed opening required '../env.php'` ou `Undefined constant "BASE_URL"` | Le fichier `env.php` n'existe pas ou est incomplet |
 | `SQLSTATE[HY000] [1045] Access denied` | Identifiants de connexion incorrects dans `env.php` |
 | `SQLSTATE[HY000] [1049] Unknown database` | La base n'a pas été importée, ou `dbname` est incorrect |
 

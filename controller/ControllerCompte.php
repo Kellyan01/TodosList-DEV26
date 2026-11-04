@@ -14,7 +14,7 @@ class ControllerCompte extends Controller{
     public function render():void{
         //Vérifier si on accède à cette page sans être connecté. Si c'est le cas, on redirige vers l'accueil
         if (!isset($_SESSION['id'])) {
-            header('Location: /TodosList/');
+            header('Location:'.BASE_URL);
             exit;
         }
         //Affichage du Header

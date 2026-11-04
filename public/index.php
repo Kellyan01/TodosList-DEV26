@@ -7,6 +7,7 @@ session_start();
 
 //Importer les ressources
 require_once '../env.php';
+require_once '../utils/utils.php';
 include '../controller/deco.php';
 include '../controller/Controller.php';
 include '../model/Model.php';
@@ -28,8 +29,8 @@ $path = parse_url($url)["path"];
 // 3. Vérifier le path et Lancer le controller selon l'url demandé
 switch($path){
     case BASE_URL :
-        //Création du Model à exploiter
-        $modelUser = new ModelUser(new PDO("mysql:host={$_ENV['dbhost']};dbname={$_ENV['dbname']}",$_ENV['dblogin'],$_ENV['dbpassword']));
+        //Création du Model à exploiter. J'utilise la fonction connect() provenant du fichier utils.php pour générer l'objet PDO nécessaire
+        $modelUser = new ModelUser(connect());
 
         //Création des View
         $viewHeader = new ViewHeader();

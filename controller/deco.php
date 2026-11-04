@@ -4,6 +4,6 @@ function deconnect(){
     session_destroy();
 
     //Redirection HTTP
-    header('Location:/TodosList/');
+    header('Location:'.BASE_URL);
     exit;
 }

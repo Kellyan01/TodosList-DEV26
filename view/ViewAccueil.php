@@ -71,7 +71,7 @@ class ViewAccueil extends View{
 
     //METHODS
     function display():void{
-        // Ne pas Oublier htmlenetities() pour éviter les injection de code (faille XSS)
+        // Ne pas Oublier htmlentities() pour éviter les injection de code (faille XSS)
     ?>
         <main>
                 <h1>Page d'Accueil</h1>

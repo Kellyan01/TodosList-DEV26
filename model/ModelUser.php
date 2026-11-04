@@ -163,7 +163,6 @@ class ModelUser extends Model{
     //METHODS
     public function findAll():array{
         try{
-            //A.BIS : Vérifier si l'email utiliser pour l'enregistrement est disponible
             //Préparer une requête SELECT pour récupérer les données d'un compte utilisant l'email
             $request = $this->getPdo()->prepare('SELECT u.id_user, u.firstname, u.lastname, u.email, u.`password`, u.created_at, r.`role` FROM users u INNER JOIN roles r ON u.id_role = r.id_role');
 
@@ -174,7 +173,9 @@ class ModelUser extends Model{
             //ici fetchAll() pour retourner un tableau contenant des tableaux associatifs (FETCH_ASSOC) des users
             return $request->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $error){
-            die($error->getMessage());
+            //Message pour l'utilisateur : le bon code HTTP et un message neutre
+            http_response_code(500);
+            die("<h1>Service momentanément indisponible. Veuillez réessayer plus tard.</h1>");
         }
     }
 
@@ -194,7 +195,9 @@ class ModelUser extends Model{
             //ici fetch() uniquement, car je n'ai besoin de trouver qu'une seule ligne, et donc qu'un seul et unique tableau associatif au maximum
             return $request->fetch(PDO::FETCH_ASSOC);
         }catch(Exception $error){
-            die($error->getMessage());
+            //Message pour l'utilisateur : le bon code HTTP et un message neutre
+            http_response_code(500);
+            die("<h1>Service momentanément indisponible. Veuillez réessayer plus tard.</h1>");
         }
     }
 
@@ -214,7 +217,9 @@ class ModelUser extends Model{
 
 
         }catch(Exception $error){
-            die($error->getMessage());
+            //Message pour l'utilisateur : le bon code HTTP et un message neutre
+            http_response_code(500);
+            die("<h1>Service momentanément indisponible. Veuillez réessayer plus tard.</h1>");
         }
     }
 

@@ -78,9 +78,9 @@ class ControllerAccueil extends Controller{
             //2) Normalisation des données : trim()
             $email = trim($_POST['emailCo']);
 
-            //3) Vérifier que les champs sont remplis
+            //3.a) Vérifier que les champs sont remplis
             if(!empty($email) && !empty($_POST['passwordCo'])){
-                //3) Vérifier le format des données
+                //3.b) Vérifier le format des données
                 if(filter_var($email,FILTER_VALIDATE_EMAIL)){
                     //4) Vérifier qu'un compte existe
                     $data = $this->getModels()['modelUser']->setEmail($email)->findOneByEmail();
