@@ -4,6 +4,15 @@ Projet fil rouge de la formation Développeur BAC+2 : une application de gestion
 
 Ce dépôt contient les **démo-corrections** des différentes étapes du TP. Chaque étape correspond à une branche.
 
+## Composer
+Ce projet utiliser un autoloader composer. Vous avez besoin d'installer le dossier vendor avec composer. Pour cela, à la racine du projet, taper :
+
+```bash
+composer install
+```
+
+le fichier composer.json possède la liste des dossiers à include. Si vous le modifier, vous devez réinstaller le dossier vendor comme ci-desssus.
+
 ## Les branches
 
 | Branche | Étape | Contenu |
