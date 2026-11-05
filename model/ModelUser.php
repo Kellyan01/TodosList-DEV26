@@ -1,4 +1,8 @@
 <?php
+namespace TodosList\Model;
+
+use \PDO;
+
 //Class ModelUer
 class ModelUser extends Model{
     //ATTRIBUT

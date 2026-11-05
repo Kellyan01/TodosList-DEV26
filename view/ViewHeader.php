@@ -1,4 +1,6 @@
 <?php
+namespace TodosList\View;
+
 class ViewHeader extends View{
     //ATTRIBUT
     private string $title = "";

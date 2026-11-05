@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": {
+            "TodosList\\Controller\\" : "controller/",
+            "TodosList\\Model\\" : "model/",
+            "TodosList\\View\\" : "view/"
+
+        }
+    }
+}

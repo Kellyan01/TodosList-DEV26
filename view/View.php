@@ -1,4 +1,6 @@
 <?php
+namespace TodosList\View;
+
 //Class View générique qui ne doit pas être instancié
 class View {
     //METHODS

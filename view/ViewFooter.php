@@ -1,4 +1,6 @@
 <?php
+namespace TodosList\View;
+
 //Class ViewFooter
 class ViewFooter extends View{
     //METHODS

@@ -1,4 +1,6 @@
 <?php
+namespace TodosList\View;
+
 class ViewAccueil extends View{
     //ATTRIBUT
     private string $message = "";

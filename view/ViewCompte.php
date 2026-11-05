@@ -1,4 +1,6 @@
 <?php
+namespace TodosList\View;
+
 class ViewCompte extends View{
     //ATTRIBUT
     

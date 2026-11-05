@@ -1,4 +1,8 @@
 <?php
+namespace TodosList\Model;
+
+use \PDO;
+
 //Class Model générique qui ne doit pas être instancié
 class Model {
     //ATTRIBUT

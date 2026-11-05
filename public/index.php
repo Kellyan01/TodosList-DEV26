@@ -5,20 +5,22 @@ PROJET TODOS LIST
 //Démarrage de la session
 session_start();
 
+//Autoloader de composer
+include '../vendor/autoload.php';
+
 //Importer les ressources
 require_once '../env.php';
 require_once '../utils/utils.php';
 include '../controller/deco.php';
-include '../controller/Controller.php';
-include '../model/Model.php';
-include '../view/View.php';
-include '../model/ModelUser.php';
-include '../view/ViewHeader.php';
-include '../view/ViewAccueil.php';
-include '../view/ViewCompte.php';
-include '../view/ViewFooter.php';
-include '../controller/ControllerAccueil.php';
-include '../controller/ControllerCompte.php';
+
+//Inclure les dossier virtuel de mes class
+use TodosList\Model\ModelUser;
+use TodosList\View\ViewHeader;
+use TodosList\View\ViewFooter;
+use TodosList\View\ViewAccueil;
+use TodosList\View\ViewCompte;
+use TodosList\Controller\ControllerAccueil;
+use TodosList\Controller\ControllerCompte;
 
 // 1. Récupérer l'url de la requête
 $url = $_SERVER["REQUEST_URI"];

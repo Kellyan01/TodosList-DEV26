@@ -1,4 +1,11 @@
 <?php
+//Namespace : dossier vituel dans lequel je range la class contenu dans ce fichier
+namespace TodosList\Controller;
+
+use TodosList\View\ViewHeader;
+use TodosList\View\ViewFooter;
+use TodosList\View\ViewCompte;
+
 //Class ControllerCompte
 class ControllerCompte extends Controller{
     //ATTRIBUT

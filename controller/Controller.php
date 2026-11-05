@@ -1,4 +1,10 @@
 <?php
+//Namespace : dossier vituel dans lequel je range la class contenu dans ce fichier
+namespace TodosList\Controller;
+
+use TodosList\Model\Model;
+use TodosList\View\View;
+
 //Class Controller Generic qui ne doit être instancié
 class Controller{
     //ATTRIBUT
